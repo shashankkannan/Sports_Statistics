@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Query</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</head>
+<body>
+    <!-- Video background -->
+    <video autoplay muted loop class="video-background">
+        <source src="{{ url_for('static', filename='videos/nfl.mp4') }}" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+
+    <div class="content">
+        <div class="button-container">
+            <button id="homeTeamsBtn">Teams</button>
+            <button id="yrb">Year</button>
+        </div>
+        <div class="teams-container">
+{#            <div id="homeTeams" class="teams"></div>#}
+{#            <div id="yr" class="teams"></div>#}
+            <h1 id="years">Year {{ year }}</h1>
+        </div>
+    </div>
+<div id="toast"></div>
+</body>
+</html>

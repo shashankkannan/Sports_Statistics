@@ -1,0 +1,108 @@
+/* static/css/style.css */
+body, html {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+}
+
+.video-background {
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    min-width: 100%;
+    min-height: 100%;
+    width: auto;
+    height: auto;
+    z-index: -100;
+    opacity: 0.8; /* Adjust the opacity as needed */
+}
+
+.content {
+    position: relative;
+    z-index: 10;
+    color: white;
+}
+
+button {
+    margin: 15px 0;
+    padding: 20px 30px; /* Increase padding to make the buttons bigger */
+    font-size: 30px; /* Increase font size */
+    display: block;
+    background-color: #9400D3; /* Dark violet color */
+    color: white;
+    border: none;
+    border-radius: 30px; /* Increase border radius for curved edges */
+    cursor: pointer;
+    position: fixed; /* Fix the position of the buttons */
+}
+
+#homeTeamsBtn {
+    top: 45vh; /* Adjust the top position */
+    left: 15vw; /* Adjust the left position */
+}
+
+#yrb {
+    top: 53vh; /* Adjust the top position */
+    left: 15vw; /* Adjust the left position */
+}
+
+.button-container {
+    display: inline-block;
+    padding: 20px;
+}
+
+.teams-container {
+    display: inline-block;
+    vertical-align: top;
+    margin-left: 15vw;
+}
+
+.teams {
+    width: 50vw;
+    color: black;
+    background-color: #dddddd;
+    height: 40vh; /* Set a fixed height for the teams container */
+    overflow-y: auto; /* Enable vertical scrolling */
+    font-size: 30px;
+    position: fixed; /* Fix the position of the teams list */
+    top: 45vh; /* Adjust the top position */
+    left: 35vw; /* Adjust the left position */
+}
+
+#toast {
+    visibility: hidden;
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #333;
+    color: black;
+    text-align: center;
+    padding: 15px;
+    border-radius: 5px;
+    z-index: 1000;
+}
+
+#toast.show {
+    visibility: visible;
+    animation: fadein 0.5s, fadeout 0.5s 2.5s;
+}
+
+@keyframes fadein {
+    from {bottom: 0; opacity: 0;}
+    to {bottom: 30px; opacity: 1;}
+}
+
+@keyframes fadeout {
+    from {bottom: 30px; opacity: 1;}
+    to {bottom: 0; opacity: 0;}
+}
+
+#years{
+    display: inline-block;
+    vertical-align: top;
+    margin-left: 15vw;
+    color: black;
+    top: 45vh;
+}
