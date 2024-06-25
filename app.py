@@ -3,7 +3,7 @@ import pandas as pd
 
 app = Flask(__name__)
 
-# Read the Excel file
+
 df = pd.read_excel('data/nfldata.xlsx')
 
 
@@ -108,10 +108,10 @@ def querypage():
 
             current_matchup = df1[(df1['Home Team'] == home_team) & (df1['Opposing Team'] == opposing_team) & (df1['Year'] == selected_year) & (df1['Game Week #'] == selected_game_week)].iloc[0].to_dict()
 
-            # Get last 4 games of the home team
+            #last 4 games of the home team
             home_team_games = get_last_n_games(df1, home_team, selected_year, selected_game_week, past_matches)
 
-            # Get last 4 games of the opposing team
+            #last 4 games of the opposing team
             opposing_team_games = get_last_n_games(df1, opposing_team, selected_year, selected_game_week, past_matches)
 
             return render_template('queryresults.html',
@@ -124,9 +124,9 @@ def querypage():
     return render_template('querypage.html', years=years)
 
 def get_last_n_games(df, team, year, game_week, n):
-    # Filter the games of the current year up to the selected game week
+    # Filter the games of the current year up to the selected game week loogic
     current_year_games = df[(df['Home Team'] == team) & (df['Year'] == year) & (df['Game Week #'] < game_week)]
-    # If the number of games found is less than required, get the remaining from the previous year
+    # If the number of games found is less than required, get the remaining from the previous year logic is below
     if len(current_year_games) < n and year > 1983:
         previous_year_games = df[(df['Home Team'] == team) & (df['Year'] == year - 1)]
         combined_games = pd.concat([previous_year_games, current_year_games])
