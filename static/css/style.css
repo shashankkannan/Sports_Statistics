@@ -4,19 +4,20 @@ body, html {
     margin: 0;
     padding: 0;
     font-family: Arial, sans-serif;
+    background-color: #A15454;
 }
 
-.video-background {
-    position: fixed;
-    right: 0;
-    bottom: 0;
-    min-width: 100%;
-    min-height: 100%;
-    width: auto;
-    height: auto;
-    z-index: -100;
-    opacity: 0.8; /* Adjust the opacity as needed */
-}
+/*.video-background {*/
+/*    position: fixed;*/
+/*    right: 0;*/
+/*    bottom: 0;*/
+/*    min-width: 100%;*/
+/*    min-height: 100%;*/
+/*    width: auto;*/
+/*    height: auto;*/
+/*    z-index: -100;*/
+/*    opacity: 0.8; !* Adjust the opacity as needed *!*/
+/*}*/
 
 .content {
     position: relative;
@@ -47,9 +48,15 @@ button {
     left: 15vw; /* Adjust the left position */
 }
 
+#querypagebut {
+    top: 61vh;
+    left: 15vw;
+}
+
 .button-container {
     display: inline-block;
     padding: 20px;
+
 }
 
 .teams-container {
@@ -66,7 +73,7 @@ button {
     overflow-y: auto; /* Enable vertical scrolling */
     font-size: 30px;
     position: fixed; /* Fix the position of the teams list */
-    top: 45vh; /* Adjust the top position */
+    top: 35vh; /* Adjust the top position */
     left: 35vw; /* Adjust the left position */
 }
 
@@ -89,6 +96,8 @@ button {
     animation: fadein 0.5s, fadeout 0.5s 2.5s;
 }
 
+/*animations*/
+
 @keyframes fadein {
     from {bottom: 0; opacity: 0;}
     to {bottom: 30px; opacity: 1;}
@@ -105,4 +114,13 @@ button {
     margin-left: 15vw;
     color: black;
     top: 45vh;
+}
+
+.tooltip {
+    display: none;
+    background-color: #333;
+    color: #fff;
+    padding: 5px;
+    border-radius: 5px;
+    font-size: 12px;
 }

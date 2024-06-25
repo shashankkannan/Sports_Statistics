@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Query Results</title>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .scroll-container {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .scrollbar {
+            width: 100px;
+            margin-right: 10px;
+        }
+        .scroll-value {
+            width: 150px;
+            text-align: center;
+        }
+        .value-display {
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>{{ result }}</h1>
+    <table border="1" class="table">
+        <tr>
+            {% for key in current_matchup.keys() %}
+                <th>{{ key }}</th>
+            {% endfor %}
+        </tr>
+        <tr>
+            {% for value in current_matchup.values() %}
+                <td>{{ value }}</td>
+            {% endfor %}
+        </tr>
+    </table>
+    <h2>Last 4 Games of Home Team:</h2>
+    <table border="1" class="table">
+        {% for game in home_team_games %}
+            <tr>
+                {% for key, value in game.items() %}
+                    <td>{{ value }}</td>
+                {% endfor %}
+                <td><button class="btn btn-primary game-details-btn" data-year="{{ game['Year'] }}" data-week="{{ game['Game Week #'] }}" data-team="{{ game['Home Team'] }}">Show Details</button></td>
+            </tr>
+        {% endfor %}
+    </table>
+    <h2>Last 4 Games of Opposing Team:</h2>
+    <table border="1" class="table">
+        {% for game in opposing_team_games %}
+            <tr>
+                {% for key, value in game.items() %}
+                    <td>{{ value }}</td>
+                {% endfor %}
+                <td><button class="btn btn-primary game-details-btn" data-year="{{ game['Year'] }}" data-week="{{ game['Game Week #'] }}" data-team="{{ game['Home Team'] }}">Show Details</button></td>
+            </tr>
+        {% endfor %}
+    </table>
+    <a href="/querypage" class="btn btn-secondary">Back to Query Page</a>
+
+    <!-- Modal -->
+    <div class="modal fade" id="gameDetailsModal" tabindex="-1" role="dialog" aria-labelledby="gameDetailsModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="gameDetailsModalLabel">Game Details</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div id="game-details-content">
+                        <!-- Dynamic content goes here -->
+                    </div>
+                    <button id="apply-btn" class="btn btn-primary mt-2">Apply</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('.game-details-btn').click(function() {
+                const year = $(this).data('year');
+                const week = $(this).data('week');
+                const team = $(this).data('team');
+
+                $.post('/game_details', { year: year, game_week: week, home_team: team }, function(data) {
+                    let content = '';
+                    let keyMap = {};  // Dictionary to map sanitized keys to original keys
+                    $.each(data, function(key, value) {
+                        const sanitizedKey = key.replace(/[^\w]/g, '_');
+                        keyMap[sanitizedKey] = key;  // Map sanitized key to original key
+
+                        content += `
+                            <div class="scroll-container">
+                                <label>${key}:</label>
+                                <input type="range" class="scrollbar left-scroll" min="0" max="${value}" value="0" id="${sanitizedKey}_left">
+                                <span class="scroll-value" id="${sanitizedKey}_value">${value}</span>
+                                <input type="range" class="scrollbar right-scroll" min="${value}" max="99" value="${value}" id="${sanitizedKey}_right">
+                                    <div class="checkbox-container">
+                                    <input type="checkbox" class="include-zero" id="${sanitizedKey}_include_zero">
+                                    <label for="${sanitizedKey}_include_zero">Include 0</label>
+                                </div>
+                            </div>
+                        `;
+                    });
+                    $('#game-details-content').html(content);
+                    $('#gameDetailsModal').modal('show');
+
+                    // Function to update the displayed range
+                    function updateRangeDisplay(sanitizedKey) {
+                        let displayValue =``;
+                        const leftValue = parseInt($(`#${sanitizedKey}_left`).val());
+                        const rightValue = parseInt($(`#${sanitizedKey}_right`).val());
+                        console.log(`${sanitizedKey} range is: ${leftValue} - ${rightValue}`);
+                        if (rightValue && leftValue === 0){
+                            displayValue = `${rightValue}`;
+                        }
+                        else {
+                            displayValue = `${leftValue} - ${rightValue}`;
+                        }
+
+                        $(`#${sanitizedKey}_value`).text(displayValue);
+                    }
+
+                    // Bind input events to the scrollbars
+                    $('.left-scroll').on('input', function() {
+                        const sanitizedKey = $(this).attr('id').split('_left')[0];
+                        updateRangeDisplay(sanitizedKey);
+                    });
+
+                    $('.right-scroll').on('input', function() {
+                        const sanitizedKey = $(this).attr('id').split('_right')[0];
+                        updateRangeDisplay(sanitizedKey);
+                    });
+
+                    $('#apply-btn').off('click').click(function() {
+                        const appliedValues = {};
+                        $('.scrollbar.left-scroll').each(function() {
+                            const sanitizedKey = $(this).attr('id').split('_left')[0];
+                            const leftValue = $(this).val();
+                            const rightValue = $(`#${sanitizedKey}_right`).val();
+                            const includeZero = $(`#${sanitizedKey}_include_zero`).is(':checked');
+
+                            if(rightValue && parseInt(leftValue) === 0 && !includeZero){
+                                appliedValues[keyMap[sanitizedKey]] = `${rightValue}`;
+                            }
+                            else if (rightValue && parseInt(leftValue) === 0 && includeZero){
+                                appliedValues[keyMap[sanitizedKey]] = `${leftValue} - ${rightValue}`;
+                            }
+                            else {
+                                appliedValues[keyMap[sanitizedKey]] = `${leftValue} - ${rightValue}`;
+                            }
+                              // Use keyMap to get original key
+                        });
+
+                        let displayContent = '<div><h3>Original Values:</h3>';
+                        $.each(data, function(key, value) {
+                            displayContent += `<div class="value-display">${key}: ${value}</div>`;
+                        });
+                        displayContent += '<h3>Applied Values:</h3>';
+                        $.each(appliedValues, function(key, value) {
+                            displayContent += `<div class="value-display">${key}: ${value}</div>`;
+                        });
+                        displayContent += `<button id="edit-btn" class="btn btn-secondary mt-2">Edit Offsets</button></div>`;
+
+                        $('#game-details-content').html(displayContent);
+
+                        $('#edit-btn').click(function() {
+                            $('#gameDetailsModal').modal('show');
+                        });
+                    });
+                });
+            });
+        });
+    </script>
+</body>
+</html>

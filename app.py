@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, jsonify
 import pandas as pd
 
 app = Flask(__name__)
@@ -73,6 +73,87 @@ def teams():
 
     teams_html = '<br>'.join(teams_with_names)
     return teams_html
+
+
+@app.route('/querypage', methods=['GET', 'POST'])
+def querypage():
+    df1 = pd.read_excel('data/nfldata.xlsx')
+    years = list(range(1983, 2024))
+
+    if request.method == 'GET':
+        return render_template('querypage.html', years=years)
+
+    if request.method == 'POST':
+        year = request.form.get('year')
+        if year:
+            year = int(year)
+            game_weeks = df1[df1['Year'] == year]['Game Week #'].unique().tolist()
+            return render_template('querypage.html', years=years, selected_year=year, game_weeks=game_weeks)
+
+        game_week = request.form.get('game_week')
+        if game_week:
+            game_week = int(game_week)
+            selected_year = int(request.form.get('selected_year'))
+            matches = df1[(df1['Year'] == selected_year) & (df1['Game Week #'] == game_week)]
+            matchups = [f"{row['Home Team']} vs {row['Opposing Team']}" for index, row in matches.iterrows()]
+            return render_template('querypage.html', years=years, selected_year=selected_year,  selected_game_week=game_week, matchups=matchups)
+
+        selected_matchup = request.form.get('matchup')
+        if selected_matchup:
+            selected_year = int(request.form.get('selected_year'))
+            selected_game_week = int(request.form.get('selected_game_week'))
+            home_team, opposing_team = selected_matchup.split(" vs ")
+
+            past_matches = int(request.form.get('past_matches', 4))
+
+            current_matchup = df1[(df1['Home Team'] == home_team) & (df1['Opposing Team'] == opposing_team) & (df1['Year'] == selected_year) & (df1['Game Week #'] == selected_game_week)].iloc[0].to_dict()
+
+            # Get last 4 games of the home team
+            home_team_games = get_last_n_games(df1, home_team, selected_year, selected_game_week, past_matches)
+
+            # Get last 4 games of the opposing team
+            opposing_team_games = get_last_n_games(df1, opposing_team, selected_year, selected_game_week, past_matches)
+
+            return render_template('queryresults.html',
+                                   result=f"You selected matchup: {selected_matchup}",
+                                   current_matchup=current_matchup,
+                                   home_team_games=home_team_games,
+                                   opposing_team_games=opposing_team_games,
+                                   past_matches=past_matches)
+
+    return render_template('querypage.html', years=years)
+
+def get_last_n_games(df, team, year, game_week, n):
+    # Filter the games of the current year up to the selected game week
+    current_year_games = df[(df['Home Team'] == team) & (df['Year'] == year) & (df['Game Week #'] < game_week)]
+    # If the number of games found is less than required, get the remaining from the previous year
+    if len(current_year_games) < n and year > 1983:
+        previous_year_games = df[(df['Home Team'] == team) & (df['Year'] == year - 1)]
+        combined_games = pd.concat([previous_year_games, current_year_games])
+        combined_games = combined_games.sort_values(by=['Year', 'Game Week #'], ascending=False)
+        return combined_games.head(n).to_dict(orient='records')
+    else:
+        current_year_games = current_year_games.sort_values(by=['Year', 'Game Week #'], ascending=False)
+        return current_year_games.head(n).to_dict(orient='records')
+
+@app.route('/game_details', methods=['POST'])
+def game_details():
+    year = int(request.form.get('year'))
+    game_week = int(request.form.get('game_week'))
+    home_team = request.form.get('home_team')
+
+    game = df[(df['Year'] == year) & (df['Game Week #'] == game_week) & (df['Home Team'] == home_team)].iloc[0]
+
+    game_details = {
+        'This Game SU #': int(game['This Game SU #']),
+        'This Game Line #': int(game['This Game Line #']),
+        'This Game ATS #': int(game['This Game ATS #']),
+        'This Game Total': int(game['This Game Total']),
+        'This Game Scored': int(game['This Game Scored']),
+        'This Game Allowed': int(game['This Game Allowed'])
+    }
+
+    return jsonify(game_details)
 
 
 if __name__ == '__main__':
