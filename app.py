@@ -3,7 +3,7 @@ import pandas as pd
 import firebase_admin
 from firebase_admin import credentials, db
 
-cred = credentials.Certificate("creds.json")
+cred = credentials.Certificate("sportsstatistics-49902-firebase-adminsdk-zv0k0-b61e4fcdfb.json")
 firebase_admin.initialize_app(cred, {
     'databaseURL': 'https://sportsstatistics-49902-default-rtdb.firebaseio.com/'
 })
