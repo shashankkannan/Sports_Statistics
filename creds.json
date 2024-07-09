@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "sportsstatistics-49902",
+  "private_key_id": "ca735ac477905f29b66d768778dcba1ec4fff3cc",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQC40M5L3/Hd3gI5\ndS3Otb/GqkbSLxVoxkuJ4igE/LcTd+BvV+5rpEVBeSrxCVNyKTbOORyAjjmDve2e\n5Ijclu5lMkAiiio50ZDj7jCvR4O0rxqoBOY02OzP3IrNnTE/Y62jujbyixNq4Vmo\nonMR5zRIrXtmAHGb5xSsyPV32Mpai51T25j0eQndJFliPPQP972CQxML7ZXnTojo\n0SSuMms8fonWVe7T4MkQb7d6QKgJK58QKqAwLsls0SaXb1GZXCD616CAnWTp9IpM\nZdm+vERm4nMMo/+hdjZbKLbYb50oyWcaDewZ9Y4aHju2yDbcoawyBnx+s2CKtj8z\nES4jYGz7AgMBAAECggEAB0GDZ+0x5MELm0/jbYMrNVSIFUZt88AdRRuQ8KkvUt9Y\n+2YbYTSA15I3QmFYWloN4cjSOqXa0jZJtvxH90khsO1pITIFeGGm65v1Y1xOanCZ\nflE67IY7velttabfQRrbvVrZP2qAZ6jTSVCfbeuC3PuapaWM0E8hO6tkH8FuKGHT\nqP+dVexwkInXivjj7KhvNVWTwjJwKPuxPV8lndJm/fWGe2Wg+1+tM/yX9iVN0sfN\n2NLf9MoL6TmwfdMXVz+9YaZtJTcdCmd0HxQRGglMP2U3aCgIhsnNRwhu5EeShEyH\nTCfqicLif18Iu5l+okX9CAaMp1NZ9XKEbHeiut/JWQKBgQD0EvLKKChuV9zNmeZO\nbtpqpNW7+cQQT6pAR4wafDA1Lm8MerkNTUDXF4/wM/PkwGbfrePGs55ryXcKSbpD\n2et0duwZ1E291MQRGx4cSteB2nrJwyvnNhrYsQ2F1FDEWIJyfagXaiUFmb+989kr\n/SLO1jbXez6Fd7zGEx4TJR3DZQKBgQDB2JyPw65h6lNguEbWbT34pW7Sw/CTR9yT\nWBpCHU/V6DN2gB3J2Ir+cUhzuZZ91Bkn/WqwhzWoCHp5ep7zDKPZ2JvzW2Vqo1F0\nELoKpn8lxna0ZK/YEGLSSexvufNjUrXVM7VCEEhMlIN+MiVxYC4LbF5zk7kuLBls\nfZF7QN7Y3wKBgQCZCgyMb5OyZItBq7857M4tUj/mRt0GMT2aYoJZ1QbRQdVFqOnB\ninAerlqFjb3e8DlRBZKt89Bg24k1vTb69nhppWuzYmiAoBl0dGFz8gWhGWImgqdT\nqZw5xQKqqI8gHjNlIJ82V0rxcQ9GRtEkgOvDb5QhltiEDakjNbeE36AC9QKBgDqE\ncX7Uy6ezXUgtWPUSNUsCZdoqXE2Zu/Se/A5JWvhwCFkVg+iS/iKhgAWvWMbTaGSy\nE6sGpiP7qz1QzvsALdZtlWZ5iLwQYV5wTjk42dlFeEAsxQisqahhuIZh1B9/sHSU\nD3vJ/olfq/JEoRkAt+Wq6Thqt9RAa8xce7aBdsRxAoGBAKfpqc4TQtA6WgfafLNC\n/aw88hDKLNoLy0/Zvvk1x7Pu5Uw8+gPpkK2S0NoRQk3Gb51Qd4t9sInPUuGm3SV7\ndPTSci+EzM+5FXyTaTQLu4RXxAcTNXkPWX3jrgiWyn/c2+GBCXOn1jVKy/NVp4cL\nyLNy8sa8ucS2vLqU707TpkS0\n-----END PRIVATE KEY-----\n",
+  "client_email": "firebase-adminsdk-zv0k0@sportsstatistics-49902.iam.gserviceaccount.com",
+  "client_id": "108769182802510768136",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-zv0k0%40sportsstatistics-49902.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}

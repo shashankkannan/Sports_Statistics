@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Select Team</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center">Select Team for Year {{ year }}</h1>
+        <form action="{{ url_for('select_team', year=year) }}" method="POST" class="mt-4">
+            <div class="form-group">
+                <label for="team">Team</label>
+                <select class="form-control" id="team" name="team">
+                    {% for team in teams %}
+                    <option value="{{ team }}">{{ team }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary btn-block">Next</button>
+        </form>
+    </div>
+</body>
+</html>
